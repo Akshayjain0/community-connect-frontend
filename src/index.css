@@ -4,6 +4,47 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: "RaiseHand";
+  src: url("../src/assets/fonts/RoobertPRO-Light.ttf") format("opentype");
+  font-weight: 300;
+  /* Light */
+}
+
+@font-face {
+  font-family: "RaiseHand";
+  src: url("../src/assets/fonts/Roobert-Regular.otf") format("opentype");
+  font-weight: 400;
+  /* Regular */
+}
+
+@font-face {
+  font-family: "RaiseHand";
+  src: url("../src/assets/fonts/Roobert-Medium.otf") format("opentype");
+  font-weight: 500;
+  /* Medium */
+}
+
+@font-face {
+  font-family: "RaiseHand";
+  src: url("../src/assets/fonts/Roobert-SemiBold.otf") format("opentype");
+  font-weight: 600;
+  /* SemiBold */
+}
+
+@font-face {
+  font-family: "RaiseHand";
+  src: url("../src/assets/fonts/Roobert-Bold.otf") format("opentype");
+  font-weight: 700;
+  /* Bold */
+}
+
+
+body {
+  font-family: "RaiseHand", sans-serif;
+  overflow-x: hidden;
+}
+
 :root {
   --background: hsl(0 0% 100%);
   --foreground: hsl(0 0% 3.9%);
@@ -94,7 +135,12 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
+
+/* body {
+  font-family: "Raleway", serif;
+} */
