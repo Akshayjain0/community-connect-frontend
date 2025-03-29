@@ -41,8 +41,9 @@
 
 
 body {
-  font-family: "RaiseHand", sans-serif;
+  font-family: "Urbanist", sans-serif;
   overflow-x: hidden;
+  margin: 0;
 }
 
 :root {
@@ -140,7 +141,3 @@ body {
     @apply bg-background text-foreground;
   }
 }
-
-/* body {
-  font-family: "Raleway", serif;
-} */
