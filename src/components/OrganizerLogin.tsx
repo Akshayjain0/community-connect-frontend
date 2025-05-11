@@ -12,9 +12,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { loginOrganizer } from "@/lib/api/auth";
 import { toast } from "sonner";
+import { RoleBasedRedirect } from "@/types/RoleBasedRedirect";
+import { useAuth } from "@/context/AuthContext";
 
 // Define validation schema
 const loginSchema = z.object({
@@ -22,9 +24,14 @@ const loginSchema = z.object({
 	password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-const OrganizerLogin = () => {
+type Props = {
+	roleBasedRedirect: RoleBasedRedirect;
+};
+const OrganizerLogin: React.FC<Props> = ({ roleBasedRedirect }) => {
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate(); // for redirection
+	const [shouldRedirect, setShouldRedirect] = useState(false);
+	const { role, refetchUser } = useAuth();
 	const form = useForm<z.infer<typeof loginSchema>>({
 		resolver: zodResolver(loginSchema),
 		defaultValues: {
@@ -33,14 +40,24 @@ const OrganizerLogin = () => {
 		},
 	});
 
+	useEffect(() => {
+		if (shouldRedirect && role) {
+			navigate(roleBasedRedirect[role]);
+		}
+	}, [shouldRedirect, role, navigate, roleBasedRedirect]);
+
 	async function onSubmit(values: z.infer<typeof loginSchema>) {
 		setLoading(true);
 		try {
 			await loginOrganizer(values);
+
+			refetchUser();
+
 			toast.success("Login Successful", {
 				description: "Welcome back, Organizer!",
 			});
-			navigate("/dashboard");
+
+			setShouldRedirect(true);
 		} catch (error: any) {
 			toast.error("Login Failed", {
 				description:

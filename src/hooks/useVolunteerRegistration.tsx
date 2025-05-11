@@ -56,7 +56,7 @@ export function useVolunteerRegistration(domainList: DomainListType[]) {
 			toast.success("Registration Successful", {
 				description: "You’ve been registered as a volunteer!",
 			});
-			navigate("/dashboard"); // ✅ Redirect to dashboard
+			navigate("/volunteer/dashboard"); // ✅ Redirect to dashboard
 		} catch (error: any) {
 			toast.error("Registration Failed", {
 				description:

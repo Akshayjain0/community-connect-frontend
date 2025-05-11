@@ -13,6 +13,11 @@ const Login = () => {
 		"volunteer"
 	);
 
+	const roleBasedRedirect: Record<"volunteer" | "organizer", string> = {
+		volunteer: "/volunteer/dashboard",
+		organizer: "/organizer/dashboard",
+	};
+
 	return (
 		<div className='flex h-screen w-full'>
 			{/* Left Component */}
@@ -89,9 +94,9 @@ const Login = () => {
 				<div className='flex flex-col w-[60%] h-full '>
 					{/* Conditional Rendering Based on Selection */}
 					{selectedRole === "volunteer" ? (
-						<VolunteerLogin />
+						<VolunteerLogin roleBasedRedirect={roleBasedRedirect} />
 					) : (
-						<OrganizerLogin />
+						<OrganizerLogin roleBasedRedirect={roleBasedRedirect} />
 					)}
 				</div>
 			</div>

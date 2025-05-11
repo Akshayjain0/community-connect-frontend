@@ -34,7 +34,7 @@ export function useOrganizerRegistration() {
 			toast.success("Registration Successful", {
 				description: "You’ve been registered as a organizer!",
 			});
-			navigate("/dashboard"); // ✅ Redirect to dashboard
+			navigate("/organizer/dashboard"); // ✅ Redirect to dashboard
 		} catch (error: any) {
 			toast.error("Registration Failed", {
 				description:
