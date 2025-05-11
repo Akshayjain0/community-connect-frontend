@@ -11,6 +11,10 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { loginOrganizer } from "@/lib/api/auth";
+import { toast } from "sonner";
 
 // Define validation schema
 const loginSchema = z.object({
@@ -19,6 +23,8 @@ const loginSchema = z.object({
 });
 
 const OrganizerLogin = () => {
+	const [loading, setLoading] = useState(false);
+	const navigate = useNavigate(); // for redirection
 	const form = useForm<z.infer<typeof loginSchema>>({
 		resolver: zodResolver(loginSchema),
 		defaultValues: {
@@ -27,7 +33,23 @@ const OrganizerLogin = () => {
 		},
 	});
 
-	function onSubmit(values: z.infer<typeof loginSchema>) {
+	async function onSubmit(values: z.infer<typeof loginSchema>) {
+		setLoading(true);
+		try {
+			await loginOrganizer(values);
+			toast.success("Login Successful", {
+				description: "Welcome back, Organizer!",
+			});
+			navigate("/dashboard");
+		} catch (error: any) {
+			toast.error("Login Failed", {
+				description:
+					error?.response?.data?.message ||
+					"An error occurred during registration.",
+			});
+		} finally {
+			setLoading(false);
+		}
 		console.log("Login Data:", values);
 		// Integrate with authentication API here
 	}
@@ -37,7 +59,7 @@ const OrganizerLogin = () => {
 				<h3 className='text-5xl font-bold tracking-wide'>
 					Welcome Back, Organizer!
 				</h3>
-				<p className='text-md font-medium text-center'>
+				<p className='text-md font-medium text-center text-gray-500'>
 					Access your dashboard to manage volunteer opportunities,
 					connect with passionate individuals, and drive impact in
 					your community.
@@ -100,17 +122,20 @@ const OrganizerLogin = () => {
 						<Button
 							type='submit'
 							className='w-full h-10'
+							disabled={loading}
 						>
-							Login
+							{loading ? "Submitting..." : "Submit"}
 						</Button>
 					</form>
 				</Form>
 			</div>
 			<div className='text-center mt-3'>
 				<p>OR</p>
-				<p className='underline cursor-pointer'>
-					I already have an account
-				</p>
+				<Link to={"/register/user"}>
+					<p className='underline cursor-pointer'>
+						I don't have any account
+					</p>
+				</Link>
 			</div>
 		</div>
 	);

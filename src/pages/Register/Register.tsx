@@ -4,6 +4,7 @@ import RegisterVolunteer from "/images/register-volunteer.svg";
 import RegisterOrganizer from "/images/register-organizer.svg";
 
 import { BsArrowRight } from "react-icons/bs";
+import { Link } from "react-router-dom";
 const Register = () => {
 	return (
 		<div className='flex flex-col items-center w-full my-12 gap-5'>
@@ -28,39 +29,45 @@ const Register = () => {
 			</div>
 
 			<div className='flex items-center gap-8'>
-				<div className='w-96 h-80 rounded-2xl bg-[#C3EEFC] flex flex-col justify-between hover:outline-1 overflow-hidden cursor-pointer'>
-					<div className='self-center mt-5 flex items-center gap-2'>
-						<h5 className='text-3xl font-bold tracking-wide'>
-							I'm a Organizer
-						</h5>
-						<BsArrowRight size={25} />
-					</div>
+				<Link to={"/register/organizer"}>
+					<div className='w-96 h-80 rounded-2xl bg-[#C3EEFC] flex flex-col justify-between hover:outline-1 overflow-hidden cursor-pointer'>
+						<div className='self-center mt-5 flex items-center gap-2'>
+							<h5 className='text-3xl font-bold tracking-wide'>
+								I'm a Organizer
+							</h5>
+							<BsArrowRight size={25} />
+						</div>
 
-					<img
-						src={RegisterOrganizer}
-						alt=''
-						className='self-start h-56'
-					/>
-				</div>
-				<div className='w-96 h-80 rounded-2xl bg-[#FDFE90] flex flex-col justify-between hover:outline-1 overflow-hidden cursor-pointer'>
-					<div className='self-center mt-5 flex items-center gap-2'>
-						<h5 className='text-3xl font-bold tracking-wide'>
-							I'm a Volunteer
-						</h5>
-						<BsArrowRight size={25} />
+						<img
+							src={RegisterOrganizer}
+							alt=''
+							className='self-start h-56'
+						/>
 					</div>
-					<img
-						src={RegisterVolunteer}
-						alt=''
-						className='h-56 self-end'
-					/>
-				</div>
+				</Link>
+				<Link to={"/register/volunteer"}>
+					<div className='w-96 h-80 rounded-2xl bg-[#FDFE90] flex flex-col justify-between hover:outline-1 overflow-hidden cursor-pointer'>
+						<div className='self-center mt-5 flex items-center gap-2'>
+							<h5 className='text-3xl font-bold tracking-wide'>
+								I'm a Volunteer
+							</h5>
+							<BsArrowRight size={25} />
+						</div>
+						<img
+							src={RegisterVolunteer}
+							alt=''
+							className='h-56 self-end'
+						/>
+					</div>
+				</Link>
 			</div>
 
 			<div>
-				<h4 className='underline my-10 font-semibold text-lg cursor-pointer'>
-					I already have account!
-				</h4>
+				<Link to={"/login/user"}>
+					<h4 className='underline my-10 font-semibold text-lg cursor-pointer'>
+						I already have account!
+					</h4>
+				</Link>
 			</div>
 			<div className='w-[80%] my-3'>
 				<Separator style={{ backgroundColor: "black" }} />

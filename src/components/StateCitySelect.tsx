@@ -10,6 +10,7 @@ import {
 	FormItem,
 	FormMessage,
 	FormField,
+	FormControl,
 } from "@/components/ui/form"; // Import Form components
 import { State, City } from "country-state-city";
 import { UseFormReturn } from "react-hook-form";
@@ -45,9 +46,11 @@ const IndiaStateCitySelect = ({ form }: IndiaStateCitySelectProps) => {
 								}}
 								value={field.value}
 							>
-								<SelectTrigger className='w-full'>
-									<SelectValue placeholder='Select a State' />
-								</SelectTrigger>
+								<FormControl>
+									<SelectTrigger className='w-full'>
+										<SelectValue placeholder='Select a State' />
+									</SelectTrigger>
+								</FormControl>
 								<SelectContent>
 									{indianStates.map((state) => (
 										<SelectItem
@@ -81,15 +84,17 @@ const IndiaStateCitySelect = ({ form }: IndiaStateCitySelectProps) => {
 								disabled={!selectedState}
 								value={field.value}
 							>
-								<SelectTrigger className='w-full'>
-									<SelectValue
-										placeholder={
-											selectedState
-												? "Select a City"
-												: "Select a State first"
-										}
-									/>
-								</SelectTrigger>
+								<FormControl>
+									<SelectTrigger className='w-full'>
+										<SelectValue
+											placeholder={
+												selectedState
+													? "Select a City"
+													: "Select a State first"
+											}
+										/>
+									</SelectTrigger>
+								</FormControl>
 								<SelectContent>
 									{indianCities.map((city) => (
 										<SelectItem

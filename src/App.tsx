@@ -1,6 +1,6 @@
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./pages/GetStarted";
+import Home from "./pages/Home";
 import Register from "./pages/Register/Register";
 // import Dashboard from "./components/pages/Dashboard";
 // import Projects from "./components/pages/Projects";
@@ -11,6 +11,7 @@ import RegisterOrganizer from "./pages/Register/RegisterOrganizer";
 import Login from "./pages/Login/Login";
 import AuthLayout from "./components/Layout/AuthorizedLayout/AuthLayout";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import { Toaster } from "./components/ui/sonner";
 // import AuthLayout from "./components/Layout/AuthorizedLayout/AuthLayout";
 
 function App() {
@@ -37,7 +38,12 @@ function App() {
 		},
 	]);
 
-	return <RouterProvider router={router} />;
+	return (
+		<>
+			<RouterProvider router={router} />
+			<Toaster richColors />
+		</>
+	);
 }
 
 export default App;

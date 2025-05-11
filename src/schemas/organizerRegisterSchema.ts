@@ -65,8 +65,9 @@ export const OrganizerSchema = z
 
 		state: z.string().min(1, { message: "State is required" }),
 		city: z.string().min(1, { message: "City is required" }),
+		locality: z.string().min(2, { message: "Locality is required" }),
 
-		logo: z.string().url({ message: "Invalid logo URL" }).optional(),
+		// logo: z.string().url({ message: "Invalid logo URL" }).optional(),
 	})
 	.refine((data) => data.password === data.confirmPassword, {
 		message: "Passwords must match",

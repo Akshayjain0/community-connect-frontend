@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import {
 	Form,
 	FormControl,
+	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
@@ -13,8 +14,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import IndiaStateCitySelect from "./StateCitySelect";
+import { Textarea } from "./ui/textarea";
+import { useOrganizerRegistration } from "@/hooks/useOrganizerRegistration";
 
 const OrganizerForm = () => {
+	const { onSubmit, loading } = useOrganizerRegistration();
 	const form = useForm<z.infer<typeof OrganizerSchema>>({
 		resolver: zodResolver(OrganizerSchema),
 		defaultValues: {
@@ -27,13 +31,14 @@ const OrganizerForm = () => {
 			contact_number: "",
 			state: "",
 			city: "",
-			logo: "",
+			locality: "",
+			// logo: "",
 		},
 	});
 
-	function onSubmit(values: z.infer<typeof OrganizerSchema>) {
-		console.log(values);
-	}
+	// function onSubmit(values: z.infer<typeof OrganizerSchema>) {
+	// 	console.log(values);
+	// }
 
 	return (
 		<div className='w-[100%] mt-10'>
@@ -88,6 +93,9 @@ const OrganizerForm = () => {
 										{...field}
 									/>
 								</FormControl>
+								<FormDescription>
+									This is your public display name.
+								</FormDescription>
 								<FormMessage />
 							</FormItem>
 						)}
@@ -164,7 +172,26 @@ const OrganizerForm = () => {
 					{/* State and City Select */}
 					<IndiaStateCitySelect form={form} />
 
-					<FormField
+					<div className=''>
+						<FormField
+							control={form.control}
+							name='locality'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Locality</FormLabel>
+									<FormControl>
+										<Textarea
+											{...field}
+											placeholder='Street No. 1, Near ...'
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
+
+					{/* <FormField
 						control={form.control}
 						name='logo'
 						render={({ field }) => (
@@ -179,13 +206,14 @@ const OrganizerForm = () => {
 								<FormMessage />
 							</FormItem>
 						)}
-					/>
+					/> */}
 
 					<Button
 						type='submit'
-						className='w-full h-10 mt-2'
+						className='w-full h-10 mt-2 '
+						disabled={loading}
 					>
-						Submit
+						{loading ? "Submitting..." : "Submit"}
 					</Button>
 				</form>
 			</Form>

@@ -21,10 +21,19 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "./ui/select";
+import { useState } from "react";
+import { MultiSelect } from "./custom/MultiSelect";
+import {
+	DomainListType,
+	MultiSelectOption,
+} from "@/types/volunteer/DomainListType";
+import { Textarea } from "./ui/textarea";
+import { useVolunteerRegistration } from "@/hooks/useVolunteerRegistration";
 
-import { communityProjectDomains } from "@/Constants/communityProjectDomains";
-
-const VolunteerForm = () => {
+const VolunteerForm = ({ domainList }: { domainList: DomainListType[] }) => {
+	const { onSubmit, loading } = useVolunteerRegistration(domainList);
+	// const [selectedSubdomains, setSelectedSubdomains] = useState<string[]>([]);
+	const [selectedDomains, setSelectedDomains] = useState<string[]>([]);
 	const form = useForm<z.infer<typeof VolunteerSchema>>({
 		resolver: zodResolver(VolunteerSchema),
 		defaultValues: {
@@ -35,19 +44,72 @@ const VolunteerForm = () => {
 			password: "",
 			state: "",
 			city: "",
+			locality: "",
 			confirmPassword: "",
-			preferred_domains: [],
-			willing_to_work_in_other_domains: false, // Boolean field
-			availability: "full-time", // Set a default valid value
-			profile_picture: "",
+			// interested_domains: [],
+			selected_domains: [],
+			selected_subdomains: [],
+			willing_to_work_in_other_domains: undefined, // Boolean field
+			availability: "", // Set a default valid value
+			// profile_picture: "",
 		},
 	});
 
-	function onSubmit(values: z.infer<typeof VolunteerSchema>) {
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
-		console.log(values);
-	}
+	const domainOptions: MultiSelectOption[] = domainList.map((domain) => ({
+		label: domain.domain_name,
+		value: domain._id,
+		group: "All Domains",
+	}));
+
+	const selectedDomainObjects = domainList.filter((domain) =>
+		selectedDomains.includes(domain._id)
+	);
+
+	const subdomainOptions: MultiSelectOption[] = selectedDomainObjects.flatMap(
+		(domain) =>
+			domain.subdomains.map((sub) => ({
+				label: sub.sub_domain_name,
+				value: sub._id,
+				group: domain.domain_name,
+			}))
+	);
+
+	// Submit Function
+	// async function onSubmit(values: z.infer<typeof VolunteerSchema>) {
+	// 	console.log("hello");
+
+	// 	const preferredDomainsPayload = values.selected_domains.map(
+	// 		(domainId) => {
+	// 			const domain = domainList.find((d) => d._id === domainId);
+	// 			const subdomainIds =
+	// 				domain?.subdomains
+	// 					.filter((sub) =>
+	// 						values.selected_subdomains.includes(sub._id)
+	// 					)
+	// 					.map((sub) => sub._id) || [];
+
+	// 			return {
+	// 				domain_id: domainId,
+	// 				subdomain_ids: subdomainIds,
+	// 			};
+	// 		}
+	// 	);
+
+	// 	// Destructure to remove selected_domains and selected_subdomains
+	// 	const { selected_domains, selected_subdomains, ...rest } = values;
+
+	// 	const finalPayload = {
+	// 		...rest,
+	// 		interested_domains: preferredDomainsPayload,
+	// 	};
+	// 	console.log("Final Payload", finalPayload);
+	// 	toast.success("Event has been created.");
+	// 	try {
+	// 		const response = await registerVolunteer(finalPayload);
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// }
 
 	return (
 		<div className='w-[100%] mt-10'>
@@ -146,6 +208,7 @@ const VolunteerForm = () => {
 										<Input
 											placeholder='••••••••••'
 											{...field}
+											type='password'
 										/>
 									</FormControl>
 									<FormMessage />
@@ -163,6 +226,7 @@ const VolunteerForm = () => {
 									<FormControl>
 										<Input
 											placeholder='••••••••••'
+											type='password'
 											{...field}
 										/>
 									</FormControl>
@@ -172,38 +236,74 @@ const VolunteerForm = () => {
 						/>
 					</div>
 					<IndiaStateCitySelect form={form} />
+					<div className=''>
+						<FormField
+							control={form.control}
+							name='locality'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Locality</FormLabel>
+									<FormControl>
+										<Textarea
+											{...field}
+											placeholder='Street No. 1, Near ...'
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
 
 					<FormField
 						control={form.control}
-						name='preferred_domains'
+						name='selected_domains'
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>
-									Preferred Volunteer Domains
-								</FormLabel>
-								<Select onValueChange={field.onChange}>
-									<FormControl>
-										<SelectTrigger className='w-full'>
-											<SelectValue placeholder='Select preferred domains' />
-										</SelectTrigger>
-									</FormControl>
-									<SelectContent>
-										{communityProjectDomains.map(
-											(domain) => (
-												<SelectItem
-													key={domain.value}
-													value={domain.value}
-												>
-													{domain.label}
-												</SelectItem>
-											)
-										)}
-									</SelectContent>
-								</Select>
+								<FormLabel>Choose Your Domain</FormLabel>
+								<FormControl>
+									<MultiSelect
+										options={domainOptions}
+										value={field.value} // ✅ controlled by react-hook-form
+										onValueChange={(value) => {
+											field.onChange(value); // ✅ update form state
+											setSelectedDomains(value); // ✅ update local state for subdomain calc
+										}}
+										placeholder='Select domains'
+										variant='inverted'
+										animation={2}
+									/>
+								</FormControl>
 								<FormMessage />
 							</FormItem>
 						)}
 					/>
+					{selectedDomains.length > 0 && (
+						<FormField
+							control={form.control}
+							name='selected_subdomains'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Choose Sub-Domain</FormLabel>
+									<FormControl>
+										<MultiSelect
+											options={subdomainOptions}
+											value={field.value} // ✅ controlled by react-hook-form
+											onValueChange={(value) => {
+												field.onChange(value); // ✅ update form state
+												// setSelectedSubdomains(value); // ✅ sync local state
+											}}
+											placeholder='Select subdomains'
+											variant='inverted'
+											animation={2}
+										/>
+									</FormControl>
+
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					)}
 					<div className='flex items-center justify-between w-full gap-4'>
 						<div className='w-1/2'>
 							<FormField
@@ -243,24 +343,30 @@ const VolunteerForm = () => {
 						</div>
 						<div className='w-1/2'>
 							<FormField
-								control={form.control}
 								name='willing_to_work_in_other_domains'
+								control={form.control}
 								render={({ field }) => (
-									<FormItem>
+									<FormItem className='w-full'>
 										<FormLabel>
-											Willing To Work In Other Domains
+											Willing to Work in Other Domains?
 										</FormLabel>
 										<Select
-											onValueChange={field.onChange}
-											// defaultValue={"false"}
+											onValueChange={(val) =>
+												field.onChange(val === "true")
+											}
+											value={
+												typeof field.value === "boolean"
+													? field.value.toString()
+													: undefined
+											}
 										>
-											<FormControl>
-												<SelectTrigger className='w-full'>
+											<FormControl className='w-full'>
+												<SelectTrigger>
 													<SelectValue placeholder='Select your interest' />
 												</SelectTrigger>
 											</FormControl>
 											<SelectContent>
-												<SelectItem value={"true"}>
+												<SelectItem value='true'>
 													Yes
 												</SelectItem>
 												<SelectItem value='false'>
@@ -275,11 +381,18 @@ const VolunteerForm = () => {
 						</div>
 					</div>
 
-					<Button
+					{/* <Button
 						type='submit'
 						className='w-full h-10 mt-2 '
 					>
 						Submit
+					</Button> */}
+					<Button
+						type='submit'
+						className='w-full h-10 mt-2 '
+						disabled={loading}
+					>
+						{loading ? "Submitting..." : "Submit"}
 					</Button>
 				</form>
 			</Form>

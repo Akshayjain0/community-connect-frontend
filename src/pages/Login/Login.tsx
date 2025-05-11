@@ -6,6 +6,7 @@ import RaiseHandLogo from "/images/RaiseHand.webp";
 import VolunteerLogin from "../../components/VolunteerLogin";
 import OrganizerLogin from "../../components/OrganizerLogin";
 import { Separator } from "@/components/ui/separator";
+import { Link } from "react-router-dom";
 
 const Login = () => {
 	const [selectedRole, setSelectedRole] = useState<"volunteer" | "organizer">(
@@ -70,18 +71,20 @@ const Login = () => {
 
 			{/* Right Component */}
 			<div className='w-[70%] flex items-center flex-col overflow-scroll mb-10'>
-				<div className='flex flex-col my-10'>
-					<div className='flex items-center gap-x-2'>
-						<img
-							src={RaiseHandLogo}
-							alt='logo'
-							className='h-6 w-6'
-						/>
-						<h3 className='text-2xl font-semibold tracking-wide'>
-							Raise Hand
-						</h3>
+				<Link to={"/"}>
+					<div className='flex flex-col my-10 cursor-pointer'>
+						<div className='flex items-center gap-x-2'>
+							<img
+								src={RaiseHandLogo}
+								alt='logo'
+								className='h-6 w-6'
+							/>
+							<h3 className='text-2xl font-semibold tracking-wide'>
+								Raise Hand
+							</h3>
+						</div>
 					</div>
-				</div>
+				</Link>
 
 				<div className='flex flex-col w-[60%] h-full '>
 					{/* Conditional Rendering Based on Selection */}

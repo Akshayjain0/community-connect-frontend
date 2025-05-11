@@ -3,6 +3,7 @@ import RegisterVolunteerImage from "/images/register-organizer.svg";
 import RaiseHandLogo from "/images/RaiseHand.webp";
 
 import OrganizerForm from "@/components/OrganizerForm";
+import { Link } from "react-router-dom";
 const RegisterOrganizer = () => {
 	return (
 		<div className='flex h-screen w-full'>
@@ -24,26 +25,28 @@ const RegisterOrganizer = () => {
 				</div>
 			</div>
 			{/* Right Component */}
-			<div className='w-[70%] flex items-center flex-col overflow-scroll mb-10'>
-				<div className='flex flex-col my-10'>
-					<div className='flex items-center gap-x-2'>
-						<img
-							src={RaiseHandLogo}
-							alt='logo'
-							className='h-6 w-6'
-						/>
-						<h3 className='text-2xl font-semibold tracking-wide'>
-							Raise Hand
-						</h3>
+			<div className='w-[70%] flex items-center flex-col overflow-scroll mb-3'>
+				<Link to={"/"}>
+					<div className='flex flex-col my-10 cursor-pointer'>
+						<div className='flex items-center gap-x-2'>
+							<img
+								src={RaiseHandLogo}
+								alt='logo'
+								className='h-6 w-6'
+							/>
+							<h3 className='text-2xl font-semibold tracking-wide'>
+								Raise Hand
+							</h3>
+						</div>
 					</div>
-				</div>
+				</Link>
 
 				<div className='flex flex-col w-[60%] h-full '>
 					<div className='flex flex-col items-center gap-1'>
 						<h3 className='text-5xl font-bold tracking-wide'>
 							Provide Some Information
 						</h3>
-						<p className='text-xl font-semibold'>
+						<p className='text-xl font-semibold text-gray-500'>
 							This information will be usable for volunteer
 						</p>
 					</div>
