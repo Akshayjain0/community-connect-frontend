@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from "react";
-import { LogOut, Menu, X } from "lucide-react";
-import { cn } from "@/lib/utils";
+// import { useState } from "react";
+import { LogOut } from "lucide-react";
 import RaiseHandLogo from "/images/RaiseHand.webp";
 import { Button } from "@/components/ui/button";
 import { logout } from "@/lib/api/auth";
@@ -9,28 +8,29 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 
-const navLinksVolunteer = [
-	{ name: "Home", href: "/" },
-	{ name: "Feed", href: "/feed" },
-	{ name: "Stats", href: "/stats" },
-	{ name: "Projects", href: "/projects" },
-	{ name: "Profile", href: "/profile" },
-];
+// const navLinksVolunteer = [
+// 	{ name: "Home", href: "/" },
+// 	{ name: "Feed", href: "/feed" },
+// 	{ name: "Stats", href: "/stats" },
+// 	{ name: "Projects", href: "/projects" },
+// 	{ name: "Profile", href: "/profile" },
+// ];
 
-const navLinksOrganizer = [
-	{ name: "Dashboard", href: "/dashboard" },
-	{ name: "Post Project", href: "/post" },
-	{ name: "Stats", href: "/stats" },
-	{ name: "Volunteers", href: "/volunteers" },
-	{ name: "Profile", href: "/profile" },
-];
+// const navLinksOrganizer = [
+// 	{ name: "Dashboard", href: "/dashboard" },
+// 	{ name: "Post Project", href: "/post" },
+// 	{ name: "Stats", href: "/stats" },
+// 	{ name: "Volunteers", href: "/volunteers" },
+// 	{ name: "Profile", href: "/profile" },
+// ];
 
-const Navbar = ({ role = "volunteer" }) => {
-	const [open, setOpen] = useState(false);
+// { role = "volunteer" }
+const Navbar = () => {
+	// const [open, setOpen] = useState(false);
 	const navigate = useNavigate();
 	const { refetchUser } = useAuth();
-	const navLinks =
-		role === "organizer" ? navLinksOrganizer : navLinksVolunteer;
+	// const navLinks =
+	// 	role === "organizer" ? navLinksOrganizer : navLinksVolunteer;
 
 	const handleLogout = async () => {
 		try {
