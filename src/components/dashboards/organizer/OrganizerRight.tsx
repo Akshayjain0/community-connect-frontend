@@ -1,5 +1,5 @@
 const OrganizerRight = () => {
-	return <div>OrganizerRight</div>;
+	return <div></div>;
 };
 
 export default OrganizerRight;

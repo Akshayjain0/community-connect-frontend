@@ -1,7 +1,7 @@
 
 const OrganizerLeft = () => {
   return (
-    <div>OrganizerLeft</div>
+    <div></div>
   )
 }
 

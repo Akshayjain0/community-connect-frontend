@@ -1,7 +1,13 @@
-import  { useState } from "react";
-import { Menu, X } from "lucide-react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useState } from "react";
+import { LogOut, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import RaiseHandLogo from "/images/RaiseHand.webp";
+import { Button } from "@/components/ui/button";
+import { logout } from "@/lib/api/auth";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 const navLinksVolunteer = [
 	{ name: "Home", href: "/" },
@@ -21,11 +27,32 @@ const navLinksOrganizer = [
 
 const Navbar = ({ role = "volunteer" }) => {
 	const [open, setOpen] = useState(false);
+	const navigate = useNavigate();
+	const { refetchUser } = useAuth();
 	const navLinks =
 		role === "organizer" ? navLinksOrganizer : navLinksVolunteer;
 
+	const handleLogout = async () => {
+		try {
+			await logout();
+
+			// clear any local state, cache or reset auth context
+			refetchUser(); // optional: to force user state reset
+
+			toast.success("Logged out successfully!");
+
+			// Ensure it navigates after toast and cleanup
+			setTimeout(() => {
+				navigate("/login/user");
+			}, 100);
+		} catch (err) {
+			console.error(err);
+			toast.error("Failed to logout");
+		}
+	};
+
 	return (
-		<nav className='w-full bg-white border-b border-gray-150'>
+		<nav className='w-full bg-white border-b '>
 			<div className='max-w-7xl mx-auto px-4 py-3 flex items-center justify-between'>
 				<div className='text-lg font-semibold'>
 					<div className='flex items-center gap-x-2'>
@@ -40,8 +67,16 @@ const Navbar = ({ role = "volunteer" }) => {
 					</div>
 				</div>
 
+				<Button
+					onClick={handleLogout}
+					size='icon'
+					variant='default'
+				>
+					<LogOut className='h-4 w-4' />
+				</Button>
+
 				{/* Desktop Nav */}
-				<div className='hidden md:flex gap-6'>
+				{/* <div className='hidden md:flex gap-6'>
 					{navLinks.map((link) => (
 						<a
 							key={link.name}
@@ -51,10 +86,10 @@ const Navbar = ({ role = "volunteer" }) => {
 							{link.name}
 						</a>
 					))}
-				</div>
+				</div> */}
 
 				{/* Hamburger Menu */}
-				<div className='md:hidden'>
+				{/* <div className='md:hidden'>
 					<button onClick={() => setOpen(!open)}>
 						{open ? (
 							<X className='w-6 h-6' />
@@ -62,11 +97,11 @@ const Navbar = ({ role = "volunteer" }) => {
 							<Menu className='w-6 h-6' />
 						)}
 					</button>
-				</div>
+				</div> */}
 			</div>
 
 			{/* Mobile Nav */}
-			<div
+			{/* <div
 				className={cn(
 					"md:hidden transition-all duration-300 ease-in-out overflow-hidden",
 					open ? "max-h-96 px-4 pb-4" : "max-h-0 px-4"
@@ -84,7 +119,7 @@ const Navbar = ({ role = "volunteer" }) => {
 						</a>
 					))}
 				</div>
-			</div>
+			</div> */}
 		</nav>
 	);
 };

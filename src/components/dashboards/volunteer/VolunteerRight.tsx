@@ -1,5 +1,5 @@
 const VolunteerRight = () => {
-	return <div>VolunteerRight</div>;
+	return <div></div>;
 };
 
 export default VolunteerRight;

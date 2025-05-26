@@ -54,9 +54,7 @@ const VolunteerLogin: React.FC<Props> = ({ roleBasedRedirect }) => {
 
 			refetchUser();
 
-			toast.success("Login Successful", {
-				description: "Welcome back, volunteer!",
-			});
+			toast.success("Login Successful, Welcome back, volunteer!");
 
 			setShouldRedirect(true);
 		} catch (error: any) {

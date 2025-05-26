@@ -49,7 +49,14 @@ function App() {
 			path: "/",
 			element: <AppLayout />,
 			children: [
-				{ path: "/", element: <Home /> },
+				{
+					path: "/",
+					element: (
+						<PublicRoute>
+							<Home />
+						</PublicRoute>
+					),
+				},
 				{
 					path: "/register/user",
 					element: (

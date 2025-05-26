@@ -53,9 +53,7 @@ const OrganizerLogin: React.FC<Props> = ({ roleBasedRedirect }) => {
 
 			refetchUser();
 
-			toast.success("Login Successful", {
-				description: "Welcome back, Organizer!",
-			});
+			toast.success("Login Successful, Welcome back, Organizer!");
 
 			setShouldRedirect(true);
 		} catch (error: any) {
